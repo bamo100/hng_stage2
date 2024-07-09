@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { sequelize } = require('./models');
 const userRoutes = require('./routes/user');
-const OrganisationRoutes = require('./routes/Organisation');
+const OrganisationRoutes = require('./routes/organisation');
 const dotenv = require('dotenv')
 const { Sequelize } = require('sequelize');
 dotenv.config()
