@@ -69,7 +69,7 @@ describe('Authentication Endpoints', () => {
     await UserOrganisation.destroy({ where: {} });
   });
 
-  it('should register user successfully with default Organisation', async () => {
+  it('should register user successfully with default organisation', async () => {
     const response = await request(app)
       .post('/auth/register')
       .send({ firstName: 'John', lastName: 'Doe', email: 'john@example.com', password: 'Password123' });
@@ -83,11 +83,11 @@ describe('Authentication Endpoints', () => {
 
     const user = await User.findOne({ where: { email: 'john@example.com' } });
     const userOrg = await UserOrganisation.findOne({ where: { userId: user.userId } });
-    const Organisation = await Organisation.findOne({ where: { orgId: userOrg.orgId } });
+    const organisation = await Organisation.findOne({ where: { orgId: userOrg.orgId } });
     
-    console.log(Organisation); // Add this line to log the Organisation
+    console.log(organisation); // Add this line to log the organisation
 
-    expect(Organisation.name).toBe("John's Organisation");
+    expect(organisation.name).toBe("John's Organisation");
   });
 
   it('should log the user in successfully', async () => {
@@ -147,11 +147,11 @@ describe('Authentication Endpoints', () => {
 //     user1 = await User.create({ firstName: 'Alice', lastName: 'Smith', email: 'alice@example.com', password: 'password1' });
 //     user2 = await User.create({ firstName: 'Bob', lastName: 'Brown', email: 'bob@example.com', password: 'password2' });
 
-//     // Create Organisations
+//     // Create organisations
 //     org1 = await Organisation.create({ name: 'Alice Org', description: 'Alice\'s Organisation' });
 //     org2 = await Organisation.create({ name: 'Bob Org', description: 'Bob\'s Organisation' });
 
-//     // Associate users with Organisations
+//     // Associate users with organisations
 //     await UserOrganisation.create({ userId: user1.userId, orgId: org1.orgId });
 //     await UserOrganisation.create({ userId: user2.userId, orgId: org2.orgId });
 
@@ -160,18 +160,18 @@ describe('Authentication Endpoints', () => {
 //     token2 = jwt.sign({ userId: user2.userId }, 'jwtsecret', { expiresIn: '1h' });
 //   });
 
-//   it('should deny access to Organisations user does not belong to', async () => {
+//   it('should deny access to organisations user does not belong to', async () => {
 //     const response = await request(app)
-//       .get(`/api/Organisations/${org2.orgId}`)
+//       .get(`/api/organisations/${org2.orgId}`)
 //       .set('Authorization', `Bearer ${token1}`);
 
 //     expect(response.status).toBe(404);
 //     expect(response.body.message).toBe('Organisation not found');
 //   });
 
-//   it('should allow access to Organisations user belongs to', async () => {
+//   it('should allow access to organisations user belongs to', async () => {
 //     const response = await request(app)
-//       .get(`/api/Organisations/${org1.orgId}`)
+//       .get(`/api/organisations/${org1.orgId}`)
 //       .set('Authorization', `Bearer ${token1}`);
 
 //       expect(response.status).toBe(200);
@@ -192,18 +192,18 @@ describe('GET /api/organisations/', () => {
     // Create a user
     user = await User.create({ firstName: 'Alice', lastName: 'Smith', email: 'alice@example.com', password: 'password' });
 
-    // Create Organisations
+    // Create organisations
     org1 = await Organisation.create({ name: 'Org 1', description: 'Organisation 1' });
     org2 = await Organisation.create({ name: 'Org 2', description: 'Organisation 2' });
 
-    // Associate user with Organisations
+    // Associate user with organisations
     await UserOrganisation.create({ userId: user.userId, orgId: org1.orgId });
 
     // Generate token
     token = jwt.sign({ userId: user.userId }, 'jwtsecret', { expiresIn: '1h' });
   });
 
-  it('should retrieve Organisations for authenticated user', async () => {
+  it('should retrieve organisations for authenticated user', async () => {
     // Generate a valid token for a mock user
     const user = { userId: '123456', email: 'test@example.com' };
     const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET);
@@ -218,7 +218,7 @@ describe('GET /api/organisations/', () => {
     expect(response.status).toBe(401);
     // expect(response.body.status).toBe('success');
     // expect(response.body.message).toBe('Organisations retrieved successfully');
-    // expect(response.body.data.Organisations).toHaveLength(1); // Adjust based on your test data
+    // expect(response.body.data.organisations).toHaveLength(1); // Adjust based on your test data
   });
 
   it('should return 401 Unauthorized for unauthenticated user', async () => {

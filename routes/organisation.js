@@ -21,11 +21,11 @@ const router = express.Router();
 //   }
 // };
 
-// Get all Organisations for logged-in user
+// Get all organisations for logged-in user
 router.get('/organisations/', authenticate, async (req, res) => {
   try {
     const userId = req.user.userId;
-    const Organisations = await Organisation.findAll({
+    const organisations = await Organisation.findAll({
         include: {
             model: User,
             through: UserOrganisation,
@@ -36,16 +36,16 @@ router.get('/organisations/', authenticate, async (req, res) => {
       status: 'success',
       message: 'Organisations retrieved successfully',
       data: {
-        Organisations
+        organisations
       }
     });
   } catch (error) {
-    console.error('Error retrieving Organisations:', error);
+    console.error('Error retrieving organisations:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-// Get a single Organisation by orgId
+// Get a single organisation by orgId
 router.get('/organisations/:orgId', authenticate, async (req, res) => {
   try {
     const org = await Organisation.findByPk(req.params.orgId);
@@ -59,36 +59,36 @@ router.get('/organisations/:orgId', authenticate, async (req, res) => {
       data: org
     });
   } catch (error) {
-    console.error('Error retrieving Organisation:', error);
+    console.error('Error retrieving organisation:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-// Create a new Organisation
+// Create a new organisation
 router.post('/organisations/', authenticate, async (req, res) => {
   const { name, description } = req.body;
 
   try {
-    const Organisation = await Organisation.create({ name, description });
+    const organisation = await Organisation.create({ name, description });
     const user = await User.findByPk(req.user.userId);
-    // await user.addOrganisation(Organisation);
+    // await user.addOrganisation(organisation);
     await UserOrganisation.create({
         userId: user.userId,
-        orgId: Organisation.orgId
+        orgId: organisation.orgId
     });
 
     return res.status(201).json({
       status: 'success',
       message: 'Organisation created successfully',
-      data: Organisation
+      data: organisation
     });
   } catch (error) {
-    console.error('Error creating Organisation:', error);
+    console.error('Error creating organisation:', error);
     return res.status(400).json({ status: "Bad Request",  message: "Client error" });
   }
 });
 
-// Add a user to an Organisation
+// Add a user to an organisation
 router.post('/organisations/:orgId/users', authenticate, async (req, res) => {
   const { userId } = req.body;
 
@@ -97,8 +97,8 @@ router.post('/organisations/:orgId/users', authenticate, async (req, res) => {
   }
 
   try {
-    const Organisation = await Organisation.findByPk(req.params.orgId);
-    if (!Organisation) {
+    const organisation = await Organisation.findByPk(req.params.orgId);
+    if (!organisation) {
       return res.status(404).json({ message: 'Organisation not found' });
     }
 
@@ -111,26 +111,26 @@ router.post('/organisations/:orgId/users', authenticate, async (req, res) => {
     const existingAssociation = await UserOrganisation.findOne({
         where: {
           userId: user.userId,
-          orgId: Organisation.orgId
+          orgId: organisation.orgId
         }
       });
   
       if (existingAssociation) {
-        return res.status(409).json({ message: 'User is already associated with this Organisation' });
+        return res.status(409).json({ message: 'User is already associated with this organisation' });
       }
 
-    // await Organisation.addUser(user);
+    // await organisation.addUser(user);
     await UserOrganisation.create({
         userId: user.userId,
-        orgId: Organisation.orgId
+        orgId: organisation.orgId
     });
 
     return res.status(200).json({
       status: 'success',
-      message: 'User added to Organisation successfully'
+      message: 'User added to organisation successfully'
     });
   } catch (error) {
-    console.error('Error adding user to Organisation:', error);
+    console.error('Error adding user to organisation:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 });

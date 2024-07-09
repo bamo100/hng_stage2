@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { sequelize } = require('./models');
 const userRoutes = require('./routes/user');
-const OrganisationRoutes = require('./routes/organisation');
+const organisationRoutes = require('./routes/organisation');
 const dotenv = require('dotenv')
 const { Sequelize } = require('sequelize');
 dotenv.config()
@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 
 // User routes
 app.use('/auth', userRoutes);
-app.use('/api', OrganisationRoutes);
+app.use('/api', organisationRoutes);
 
 app.get('/debug', async (req, res) => {
     const pgInstalled = !!require.resolve('pg');
@@ -53,7 +53,7 @@ app.get('/debug', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 // Sync database and start server
-sequelize.sync()
+sequelize.sync({force: true})
 .then(() => {
     app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

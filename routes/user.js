@@ -30,15 +30,15 @@ router.post('/register', async (req, res) => {
         // Create new user
         const user = await User.create({ userId, firstName, lastName, email, password: hashedPassword, phone });
 
-        const Organisation = await Organisation.create({
+        const organisation = await Organisation.create({
             name: `${firstName}'s Organisation`,
-            description: `${firstName}'s default Organisation`
+            description: `${firstName}'s default organisation`
         });
 
         // Associate User with Organisation
         await UserOrganisation.create({
             userId: user.userId,
-            orgId: Organisation.orgId
+            orgId: organisation.orgId
         });
 
         // Generate JWT
