@@ -15,12 +15,12 @@ db.Sequelize = Sequelize;
 
 // Import the User model
 db.User = require('./user')(sequelize, DataTypes);
-db.Organization = require('./organization')(sequelize, DataTypes);
-db.UserOrganization = require('./userOrganization')(sequelize, DataTypes);
+db.Organisation = require('./organisation.js')(sequelize, DataTypes);
+db.UserOrganisation = require('./userOrganisation.js')(sequelize, DataTypes);
 
 
 // Define associations
-db.User.belongsToMany(db.Organization, { through: db.UserOrganization, foreignKey: 'userId' });
-db.Organization.belongsToMany(db.User, { through: db.UserOrganization, foreignKey: 'orgId' });
+db.User.belongsToMany(db.Organisation, { through: db.UserOrganisation, foreignKey: 'userId' });
+db.Organisation.belongsToMany(db.User, { through: db.UserOrganisation, foreignKey: 'orgId' });
 
 module.exports = db;

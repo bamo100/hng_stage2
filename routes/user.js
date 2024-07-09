@@ -1,7 +1,7 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { User, Organization, UserOrganization } = require('../models');
+const { User, Organisation, UserOrganisation } = require('../models');
 
 const router = express.Router();
 const jwtsecret = process.env.JWT_SECRET
@@ -30,15 +30,15 @@ router.post('/register', async (req, res) => {
         // Create new user
         const user = await User.create({ userId, firstName, lastName, email, password: hashedPassword, phone });
 
-        const organization = await Organization.create({
-            name: `${firstName}'s Organization`,
-            description: `${firstName}'s default organization`
+        const Organisation = await Organisation.create({
+            name: `${firstName}'s Organisation`,
+            description: `${firstName}'s default Organisation`
         });
 
-        // Associate User with Organization
-        await UserOrganization.create({
+        // Associate User with Organisation
+        await UserOrganisation.create({
             userId: user.userId,
-            orgId: organization.orgId
+            orgId: Organisation.orgId
         });
 
         // Generate JWT

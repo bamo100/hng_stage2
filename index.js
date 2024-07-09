@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { sequelize } = require('./models');
 const userRoutes = require('./routes/user');
-const organizationRoutes = require('./routes/organization');
+const OrganisationRoutes = require('./routes/Organisation');
 const dotenv = require('dotenv')
 const { Sequelize } = require('sequelize');
 dotenv.config()
@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 
 // User routes
 app.use('/auth', userRoutes);
-app.use('/api', organizationRoutes);
+app.use('/api', OrganisationRoutes);
 
 app.get('/debug', async (req, res) => {
     const pgInstalled = !!require.resolve('pg');

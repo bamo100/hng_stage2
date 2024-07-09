@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    const Organization = sequelize.define('Organization', {
+    const Organisation = sequelize.define('Organisation', {
       orgId: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -17,6 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     });
   
-    return Organization;
+    return Organisation;
   };
   

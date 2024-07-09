@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    const UserOrganization = sequelize.define('UserOrganization', {
+    const UserOrganisation = sequelize.define('UserOrganisation', {
       userId: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: 'Organizations', // This should match the table name of the Organization model
+          model: 'Organisations', // This should match the table name of the Organisation model
           key: 'orgId'
         }
       }
     });
   
-    return UserOrganization;
+    return UserOrganisation;
   };
   

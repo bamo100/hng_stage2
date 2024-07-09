@@ -1,10 +1,10 @@
-const { UserOrganization } = require('../models');
+const { UserOrganisation } = require('../models');
 
-async function checkOrganizationAccess(req, res, next) {
+async function checkOrganisationAccess(req, res, next) {
   const { userId } = req.user; // Assuming user ID is set in req.user by authentication middleware
   const { orgId } = req.params; // Assuming orgId is passed as a route parameter
 
-  const userOrg = await UserOrganization.findOne({ where: { userId, orgId } });
+  const userOrg = await UserOrganisation.findOne({ where: { userId, orgId } });
   if (!userOrg) {
     return res.status(403).json({ message: 'Access denied' });
   }
@@ -12,4 +12,4 @@ async function checkOrganizationAccess(req, res, next) {
   next();
 }
 
-module.exports = checkOrganizationAccess;
+module.exports = checkOrganisationAccess;
