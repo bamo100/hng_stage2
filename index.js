@@ -53,7 +53,7 @@ app.get('/debug', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 // Sync database and start server
-sequelize.sync({force: true})
+sequelize.sync()
 .then(() => {
     app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
