@@ -69,6 +69,9 @@ router.post('/organisations/', authenticate, async (req, res) => {
   const { name, description } = req.body;
 
   try {
+    if (!name) {
+      return res.status(422).json({ message: 'Name is required and cannot be null' });
+    }
     const organisation = await Organisation.create({ name, description });
     const user = await User.findByPk(req.user.userId);
     // await user.addOrganisation(organisation);
@@ -83,7 +86,7 @@ router.post('/organisations/', authenticate, async (req, res) => {
       data: organisation
     });
   } catch (error) {
-    console.error('Error creating organisation:', error);
+    // console.error('Error creating organisation:', error);
     return res.status(400).json({ status: "Bad Request",  message: "Client error" });
   }
 });
