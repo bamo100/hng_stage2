@@ -83,18 +83,20 @@ router.post('/login', async (req, res) => {
      const user = await User.findOne({ where: { email } });
   
     if (!user) {
-        return res.status(422).json({ status: "Bad Request",
-            errors: [{ field: 'password', message: 'Password must be a string, password should not be empty' }],
-            message: 'Password must be a string, password should not be empty', statusCode: 422 });
+        // return res.status(422).json({ status: "Bad Request",
+        //     errors: [{ field: 'password', message: 'Password must be a string, password should not be empty' }],
+        //     message: 'Password must be a string, password should not be empty', statusCode: 422 });
+        return res.status(401).json({ status: "Bad request", message: 'Authentication failed', statusCode: 401 });
     }
 
     // Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-        return res.status(422).json({ status: "Bad Request",
-            errors: [{ field: 'password', message: 'Password must be a string, password should not be empty' }],
-            message: 'Password must be a string, password should not be empty', statusCode: 422 });
+        // return res.status(422).json({ status: "Bad Request",
+        //     errors: [{ field: 'password', message: 'Password must be a string, password should not be empty' }],
+        //     message: 'Password must be a string, password should not be empty', statusCode: 422 });
+            return res.status(401).json({ status: "Bad request", message: 'Authentication failed', statusCode: 401 });
     }
 
     // Generate JWT
@@ -117,7 +119,10 @@ router.post('/login', async (req, res) => {
 
     } catch (error) {
         // console.error('Error during login:', error);
-        return res.status(401).json({ status: "Bad request", message: 'Authentication failed', statusCode: 401 });
+        // return res.status(401).json({ status: "Bad request", message: 'Authentication failed', statusCode: 401 });
+        return res.status(422).json({ status: "Bad Request",
+            errors: [{ field: 'password', message: 'Password must be a string, password should not be empty' }],
+            message: 'Password must be a string, password should not be empty', statusCode: 422 });
     }
 });
 
