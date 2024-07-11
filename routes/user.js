@@ -61,15 +61,16 @@ router.post('/register', async (req, res) => {
     }catch (error) {
         // console.error('Error during registration:', error);
         if (error.name === 'SequelizeUniqueConstraintError') {
-            return res.status(400).json({
-                status: 'Bad Request',
-                message: 'Registration unsuccessful',
-                statusCode: 400
-                // errors: [{ field: 'email', message: 'Email must be unique' }]
+            return res.status(422).json({
+                // status: 'Bad Request',
+                // message: 'Registration unsuccessful',
+                message: "Email already exists",
+                // statusCode: 422
+                errors: [{ field: 'email', message: 'Email must be unique' }]
             });
         }
 
-        return res.status(400).json({status: 'Bad Request', message: 'Registration unsuccessful', statusCode: 400})
+        return res.status(422).json({status: 'Bad Request', message: 'Registration unsuccessful', statusCode: 422})
     }
 });
 
@@ -83,8 +84,8 @@ router.post('/login', async (req, res) => {
   
     if (!user) {
         return res.status(422).json({ status: "Bad Request",
-            errors: [{ field: 'Email', message: 'email should not be empty' }],
-            message: 'email should not be empty', statusCode: 422 });
+            errors: [{ field: 'password', message: 'Password must be a string, password should not be empty' }],
+            message: 'Password must be a string, password should not be empty', statusCode: 422 });
     }
 
     // Check password
