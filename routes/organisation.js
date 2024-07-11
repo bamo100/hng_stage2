@@ -70,7 +70,7 @@ router.post('/organisations/', authenticate, async (req, res) => {
 
   try {
     if (!name) {
-      return res.status(422).json({ message: 'Name is required and cannot be null' });
+      return res.status(400).json({ status: "Bad Request",  message: "Client error", statusCode: 400 });
     }
     const organisation = await Organisation.create({ name, description });
     const user = await User.findByPk(req.user.userId);

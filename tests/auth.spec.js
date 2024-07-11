@@ -128,8 +128,8 @@ describe('Authentication Endpoints', () => {
       .post('/auth/register')
       .send({ firstName: 'Jane', lastName: 'Doe', email: 'john@example.com', password: 'Password123' });
 
-    expect(response.status).toBe(422);
-    expect(response.body.message).toBe('Email already exists');
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Registration unsuccessful');
   });
 });
 

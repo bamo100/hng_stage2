@@ -61,13 +61,15 @@ router.post('/register', async (req, res) => {
     }catch (error) {
         // console.error('Error during registration:', error);
         if (error.name === 'SequelizeUniqueConstraintError') {
-            return res.status(422).json({
-                message: 'Email already exists',
-                errors: [{ field: 'email', message: 'Email must be unique' }]
+            return res.status(400).json({
+                status: 'Bad Request',
+                message: 'Registration unsuccessful',
+                statusCode: 400
+                // errors: [{ field: 'email', message: 'Email must be unique' }]
             });
         }
 
-        return res.status(400).json({status: 'Bad Request', message: 'Registration unsuccessful'})
+        return res.status(400).json({status: 'Bad Request', message: 'Registration unsuccessful', statusCode: 400})
     }
 });
 
@@ -80,14 +82,18 @@ router.post('/login', async (req, res) => {
      const user = await User.findOne({ where: { email } });
   
     if (!user) {
-        return res.status(422).json({ message: 'Invalid email or password' });
+        return res.status(422).json({ status: "Bad Request",
+            errors: [{ field: 'Email', message: 'email should not be empty' }],
+            message: 'email should not be empty', statusCode: 422 });
     }
 
     // Check password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-        return res.status(422).json({ message: 'Invalid email or password' });
+        return res.status(422).json({ status: "Bad Request",
+            errors: [{ field: 'password', message: 'Password must be a string, password should not be empty' }],
+            message: 'Password must be a string, password should not be empty', statusCode: 422 });
     }
 
     // Generate JWT
@@ -109,8 +115,8 @@ router.post('/login', async (req, res) => {
     });
 
     } catch (error) {
-        console.error('Error during login:', error);
-        return res.status(401).json({ status: "Bad request", message: 'Authentication failed' });
+        // console.error('Error during login:', error);
+        return res.status(401).json({ status: "Bad request", message: 'Authentication failed', statusCode: 401 });
     }
 });
 
