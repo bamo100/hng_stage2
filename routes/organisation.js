@@ -87,7 +87,7 @@ router.post('/organisations/', authenticate, async (req, res) => {
     });
   } catch (error) {
     // console.error('Error creating organisation:', error);
-    return res.status(400).json({ status: "Bad Request",  message: "Client error" });
+    return res.status(400).json({ status: "Bad Request",  message: "Client error", statusCode: 400 });
   }
 });
 
